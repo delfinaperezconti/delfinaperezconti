@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en" id="html-root">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delfina Perez Conti — Visual Designer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,700;0,800;0,900;1,400;1,800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root { --y:#F5FF00; --b:#0A0A0A; --w:#F5F5F0; }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--b);color:var(--w);font-family:'Space Mono',monospace;cursor:none;overflow-x:hidden;}
+
+.cursor{width:12px;height:12px;background:var(--y);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;mix-blend-mode:difference;}
+.cursor-follower{width:36px;height:36px;border:1.5px solid var(--y);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;mix-blend-mode:difference;}
+
+.lang-switcher{position:fixed;top:64px;right:40px;z-index:200;display:flex;border:1.5px solid rgba(255,255,255,0.25);overflow:hidden;}
+.lang-btn{font-family:'Space Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;padding:7px 14px;background:transparent;color:rgba(255,255,255,0.45);border:none;cursor:none;transition:background 0.2s,color 0.2s;}
+.lang-btn.active{background:var(--y);color:var(--b);font-weight:700;}
+.lang-btn:hover:not(.active){color:var(--w);background:rgba(255,255,255,0.08);}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:20px 40px;mix-blend-mode:difference;}
+.nav-logo{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:1rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--w);text-decoration:none;}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{font-family:'Space Mono',monospace;font-size:0.7rem;letter-spacing:0.1em;color:var(--w);text-decoration:none;text-transform:uppercase;transition:color 0.2s;}
+.nav-links a:hover{color:var(--y);}
+
+.ticker-wrap{overflow:hidden;white-space:nowrap;background:var(--y);padding:10px 0;}
+.ticker{display:inline-block;animation:ticker 22s linear infinite;}
+.ticker span{font-family:'Space Mono',monospace;font-size:0.75rem;font-weight:700;color:var(--b);letter-spacing:0.08em;text-transform:uppercase;padding:0 24px;}
+.ticker span.star{font-size:1rem;padding:0 12px;}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.ticker-wrap.dark{background:var(--b);}
+.ticker-wrap.dark .ticker span{color:var(--y);}
+
+#hero{min-height:100vh;background:var(--y);display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;padding:0 0 60px;}
+.hero-star{position:absolute;top:-80px;left:-80px;width:420px;height:420px;opacity:0.18;animation:rotateStar 30s linear infinite;}
+@keyframes rotateStar{to{transform:rotate(360deg)}}
+.hero-subtitle-vertical{position:absolute;right:32px;bottom:80px;writing-mode:vertical-rl;font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;color:var(--b);opacity:0.7;text-transform:uppercase;}
+.hero-name{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(100px,18vw,260px);line-height:0.85;color:var(--b);text-transform:uppercase;padding:0 40px;letter-spacing:-0.02em;clip-path:inset(0 100% 0 0);animation:revealText 1.2s cubic-bezier(0.77,0,0.18,1) 0.3s forwards;}
+@keyframes revealText{to{clip-path:inset(0 0% 0 0)}}
+.hero-role{font-family:'Barlow Condensed',sans-serif;font-weight:400;font-style:italic;font-size:clamp(22px,3.5vw,52px);color:var(--b);padding:0 44px;letter-spacing:0.05em;opacity:0;animation:fadeUp 0.8s ease 1.2s forwards;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.scroll-hint{position:absolute;left:40px;bottom:40px;display:flex;align-items:center;gap:10px;font-size:0.65rem;letter-spacing:0.15em;color:var(--b);text-transform:uppercase;opacity:0;animation:fadeUp 0.8s ease 1.8s forwards;}
+.scroll-line{width:40px;height:1px;background:var(--b);}
+
+#about{background:var(--w);padding:120px 40px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+.about-section-label{font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;color:var(--b);opacity:0.5;text-transform:uppercase;margin-bottom:24px;}
+.about-hello{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(52px,8vw,110px);line-height:0.9;color:var(--b);text-transform:uppercase;letter-spacing:-0.02em;margin-bottom:32px;}
+.about-hello em{color:var(--y);font-style:normal;text-shadow:-2px -2px 0 var(--b),2px -2px 0 var(--b),-2px 2px 0 var(--b),2px 2px 0 var(--b);}
+.about-bio{font-family:'Barlow Condensed',sans-serif;font-size:1.25rem;line-height:1.5;color:var(--b);font-weight:400;max-width:480px;}
+.about-bio strong{font-weight:700;}
+.stats-row{display:flex;gap:40px;margin-top:40px;}
+.stat-item{flex:1;border-top:2px solid var(--b);padding-top:16px;}
+.stat-num{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:3.5rem;color:var(--b);line-height:1;}
+.stat-label{font-family:'Space Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;color:var(--b);opacity:0.6;text-transform:uppercase;margin-top:4px;}
+.about-right{position:relative;}
+.about-photo-frame{position:relative;display:inline-block;width:100%;}
+.photo-placeholder{width:100%;aspect-ratio:3/4;background:var(--b);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.photo-placeholder svg{width:60%;opacity:0.15;}
+.photo-overlay-star{position:absolute;top:-30px;right:-30px;width:120px;height:120px;background:var(--y);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);}
+
+#skills{background:var(--b);padding:100px 40px;}
+.skills-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:60px;border-bottom:1px solid #333;padding-bottom:24px;}
+.skills-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(40px,6vw,80px);color:var(--w);text-transform:uppercase;line-height:1;}
+.skills-title em{color:var(--y);font-style:normal;}
+.skills-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:2px;}
+.skill-col{background:#111;padding:40px 32px;}
+.skill-col-title{font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;color:var(--y);text-transform:uppercase;margin-bottom:20px;}
+.skill-list{list-style:none;}
+.skill-list li{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.1rem;color:var(--w);padding:8px 0;border-bottom:1px solid #222;transition:color 0.2s,padding-left 0.2s;}
+.skill-list li:hover{color:var(--y);padding-left:8px;}
+
+#manifesto{background:var(--w);padding:120px 40px;position:relative;overflow:hidden;}
+.manifesto-label{font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;color:var(--b);opacity:0.5;text-transform:uppercase;margin-bottom:40px;}
+.manifesto-text{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:clamp(32px,5vw,72px);line-height:1.1;color:var(--b);max-width:900px;position:relative;z-index:2;}
+.manifesto-text em{color:var(--y);font-style:normal;}
+.manifesto-star-bg{position:absolute;right:-100px;top:50%;transform:translateY(-50%);width:500px;height:500px;background:var(--y);clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);opacity:0.3;animation:pulseStar 4s ease-in-out infinite;}
+@keyframes pulseStar{0%,100%{transform:translateY(-50%) scale(1)}50%{transform:translateY(-50%) scale(1.05)}}
+.disciplines-row{display:flex;gap:4px;margin-top:60px;flex-wrap:wrap;}
+.discipline-tag{font-family:'Space Mono',monospace;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;padding:10px 18px;border:1.5px solid var(--b);color:var(--b);transition:background 0.2s,color 0.2s;cursor:default;}
+.discipline-tag:hover{background:var(--b);color:var(--y);}
+
+#work{background:var(--b);padding:120px 0;}
+.work-header{padding:0 40px 60px 40px;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:flex-end;}
+.work-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(60px,12vw,180px);color:var(--w);text-transform:uppercase;line-height:0.85;letter-spacing:-0.03em;}
+.work-categories{display:flex;flex-direction:column;gap:8px;text-align:right;}
+.work-categories span{font-family:'Space Mono',monospace;font-size:0.75rem;letter-spacing:0.1em;color:#666;text-transform:uppercase;transition:color 0.2s;cursor:pointer;}
+.work-categories span:hover,.work-categories span.active{color:var(--y);}
+
+.projects-grid{padding:60px 40px;display:grid;grid-template-columns:1fr 1fr;gap:2px;}
+.project-card{position:relative;overflow:hidden;background:#111;cursor:none;}
+.project-card.wide{grid-column:span 2;aspect-ratio:16/7;}
+.project-bg{width:100%;height:100%;transition:transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94);display:flex;align-items:center;justify-content:center;position:relative;}
+.project-card:hover .project-bg{transform:scale(1.06);}
+.project-bg-olfactory{background:linear-gradient(135deg,#1a1a1a 0%,#2d2d00 100%);}
+.project-bg-ole{background:linear-gradient(135deg,#8B2500 0%,#4a6b1a 100%);}
+.project-bg-canion{background:linear-gradient(135deg,#1a2040 0%,#402000 100%);}
+.project-bg-personal{background:linear-gradient(135deg,#2d0040 0%,#600020 100%);}
+.project-bg-canvas{background:linear-gradient(135deg,#001a00 0%,#1a1a2d 100%);}
+.project-bg-tech{background:linear-gradient(135deg,#0d0d0d 0%,#001a33 100%);}
+.project-label-big{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(60px,10vw,140px);color:rgba(255,255,255,0.06);text-transform:uppercase;letter-spacing:-0.02em;position:absolute;bottom:20px;right:20px;line-height:1;pointer-events:none;transition:color 0.4s;}
+.project-card:hover .project-label-big{color:rgba(245,255,0,0.12);}
+.project-info{position:absolute;bottom:0;left:0;right:0;padding:32px;background:linear-gradient(to top,rgba(0,0,0,0.92) 0%,transparent 100%);transform:translateY(20px);opacity:0;transition:all 0.4s ease;}
+.project-card:hover .project-info{transform:translateY(0);opacity:1;}
+.project-num{font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--y);letter-spacing:0.2em;margin-bottom:8px;}
+.project-name{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:2.4rem;color:var(--w);text-transform:uppercase;line-height:1;letter-spacing:-0.01em;}
+.project-type{font-family:'Space Mono',monospace;font-size:0.65rem;color:rgba(255,255,255,0.5);letter-spacing:0.1em;margin-top:4px;}
+.project-detail{font-family:'Barlow Condensed',sans-serif;font-size:0.95rem;line-height:1.5;color:rgba(255,255,255,0.7);margin-top:8px;max-width:460px;}
+.project-year{font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--y);position:absolute;top:20px;right:20px;opacity:0;transition:opacity 0.4s 0.1s;}
+.project-card:hover .project-year{opacity:1;}
+.work-card{display:block;text-decoration:none;color:inherit;cursor:pointer;}
+.page-transition{position:fixed;top:50%;left:50%;width:0;height:0;background:#F5FF00;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);transform:translate(-50%,-50%) scale(0);z-index:99999;transition:transform 0.6s ease;}
+.page-transition.active{transform:translate(-50%,-50%) scale(40);}
+.corner-tl,.corner-br{position:absolute;width:20px;height:20px;opacity:0;transition:opacity 0.3s;}
+.corner-tl{top:16px;left:16px;border-top:2px solid var(--y);border-left:2px solid var(--y);}
+.corner-br{bottom:16px;right:16px;border-bottom:2px solid var(--y);border-right:2px solid var(--y);}
+.project-card:hover .corner-tl,.project-card:hover .corner-br{opacity:1;}
+
+#process{background:var(--y);padding:0;position:relative;overflow:hidden;}
+.process-bg-word{position:absolute;top:0;left:0;width:100%;font-family:'Barlow Condensed',sans-serif;font-weight:900;color:rgba(0,0,0,0.07);text-transform:uppercase;line-height:0.85;pointer-events:none;letter-spacing:-0.03em;padding:40px 0 0;white-space:nowrap;display:flex;justify-content:center;}
+.process-top{display:grid;grid-template-columns:1fr 1fr;align-items:start;padding:80px 40px 60px;gap:60px;position:relative;z-index:1;}
+.process-label{font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;color:var(--b);opacity:0.55;text-transform:uppercase;margin-bottom:16px;}
+.process-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(64px,10vw,140px);color:var(--b);text-transform:uppercase;line-height:0.88;letter-spacing:-0.02em;}
+.process-title .italic{font-style:italic;font-weight:400;}
+.process-description{font-family:'Space Mono',monospace;font-size:0.75rem;line-height:1.9;color:rgba(0,0,0,0.65);max-width:480px;padding-top:12px;}
+.process-description p{margin-bottom:16px;}
+.process-steps-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:3px solid var(--b);position:relative;z-index:1;}
+.process-step{background:var(--b);padding:40px 32px;border-right:1px solid #1a1a1a;position:relative;overflow:hidden;transition:background 0.3s;}
+.process-step:last-child{border-right:none;}
+.process-step:hover{background:#111;}
+.process-step-num{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:4.5rem;color:var(--y);line-height:1;margin-bottom:20px;}
+.process-step-title{font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:1.3rem;color:var(--w);text-transform:uppercase;letter-spacing:0.03em;margin-bottom:12px;}
+.process-step-desc{font-family:'Space Mono',monospace;font-size:0.68rem;line-height:1.8;color:rgba(255,255,255,0.55);}
+.process-step-bg{position:absolute;bottom:-24px;right:-8px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:9rem;color:rgba(245,255,0,0.04);line-height:1;pointer-events:none;}
+
+#contact{background:var(--b);padding:140px 40px 80px;position:relative;overflow:hidden;}
+.contact-bg-text{position:absolute;bottom:-40px;left:-20px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(120px,20vw,280px);color:rgba(245,255,0,0.04);text-transform:uppercase;pointer-events:none;white-space:nowrap;line-height:1;}
+.contact-label{font-family:'Space Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;color:var(--y);text-transform:uppercase;margin-bottom:20px;}
+.contact-cta{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(52px,9vw,130px);color:var(--w);text-transform:uppercase;line-height:0.88;letter-spacing:-0.02em;margin-bottom:60px;position:relative;z-index:2;}
+.contact-cta em{-webkit-text-stroke:2px var(--y);color:transparent;font-style:normal;}
+.contact-links{display:flex;gap:40px;flex-wrap:wrap;position:relative;z-index:2;}
+.contact-link{display:flex;flex-direction:column;gap:6px;}
+.contact-link-label{font-family:'Space Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;color:rgba(255,255,255,0.4);text-transform:uppercase;}
+.contact-link-value{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1.1rem;color:var(--w);text-decoration:none;letter-spacing:0.05em;border-bottom:1px solid transparent;transition:border-color 0.2s,color 0.2s;}
+.contact-link-value:hover{color:var(--y);border-color:var(--y);}
+.contact-bottom{display:flex;justify-content:space-between;align-items:flex-end;margin-top:100px;padding-top:32px;border-top:1px solid #222;position:relative;z-index:2;}
+.contact-bottom-name{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:0.9rem;color:#444;letter-spacing:0.15em;text-transform:uppercase;}
+.contact-bottom-copy{font-family:'Space Mono',monospace;font-size:0.6rem;color:#333;letter-spacing:0.1em;}
+
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 0.8s ease,transform 0.8s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+@media(max-width:900px){
+  nav{padding:16px 20px;}
+  .nav-links{display:none;}
+  .lang-switcher{right:20px;top:60px;}
+  #about{grid-template-columns:1fr;gap:40px;padding:80px 20px;}
+  .about-right{order:-1;}
+  .projects-grid{grid-template-columns:1fr;padding:40px 20px;}
+  .project-card.wide{grid-column:span 1;aspect-ratio:4/3;}
+  .process-top{grid-template-columns:1fr;gap:24px;padding:60px 20px 40px;}
+  .process-steps-row{grid-template-columns:1fr 1fr;}
+  #contact{padding:80px 20px 60px;}
+  .work-header{padding:0 20px 40px;flex-direction:column;gap:20px;align-items:flex-start;}
+  .hero-name{padding:0 20px;}
+  .hero-role{padding:0 24px;}
+  .skills-grid{grid-template-columns:1fr;}
+  #manifesto{padding:80px 20px;}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-follower" id="cursorFollower"></div>
+<div class="page-transition" id="transition"></div>
+
+<div class="lang-switcher">
+  <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" id="btn-es" onclick="setLang('es')">ES</button>
+</div>
+
+<nav>
+  <a class="nav-logo" href="#hero">DPC</a>
+  <ul class="nav-links">
+    <li><a href="#about" data-en="About" data-es="Sobre mí">About</a></li>
+    <li><a href="#work" data-en="Work" data-es="Trabajos">Work</a></li>
+    <li><a href="#process" data-en="Process" data-es="Proceso">Process</a></li>
+    <li><a href="#contact" data-en="Contact" data-es="Contacto">Contact</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <svg class="hero-star" viewBox="0 0 200 200" fill="none">
+    <polygon points="100,0 120,70 196,70 136,114 158,182 100,140 42,182 64,114 4,70 80,70" fill="#0A0A0A"/>
+  </svg>
+  <p class="hero-subtitle-vertical" data-en="Portfolio 2026 — Branding · Editorial · Illustration" data-es="Portfolio 2026 — Branding · Editorial · Ilustración">Portfolio 2026 — Branding · Editorial · Illustration</p>
+  <h1 class="hero-name">Delfina<br>Perez<br>Conti</h1>
+  <p class="hero-role" data-en="Visual Designer" data-es="Diseñadora Visual">Visual Designer</p>
+  <div class="scroll-hint">
+    <span data-en="Scroll" data-es="Scrollear">Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span data-en="Typography" data-es="Tipografía">Typography</span><span class="star">&#9733;</span>
+    <span>Illustration</span><span class="star">&#9733;</span>
+    <span data-en="Conceptual Art" data-es="Arte Conceptual">Conceptual Art</span><span class="star">&#9733;</span>
+    <span>Branding</span><span class="star">&#9733;</span>
+    <span data-en="Visual Identity" data-es="Identidad Visual">Visual Identity</span><span class="star">&#9733;</span>
+    <span data-en="Editorial Design" data-es="Diseño Editorial">Editorial Design</span><span class="star">&#9733;</span>
+    <span data-en="Typography" data-es="Tipografía">Typography</span><span class="star">&#9733;</span>
+    <span>Illustration</span><span class="star">&#9733;</span>
+    <span data-en="Conceptual Art" data-es="Arte Conceptual">Conceptual Art</span><span class="star">&#9733;</span>
+    <span>Branding</span><span class="star">&#9733;</span>
+    <span data-en="Visual Identity" data-es="Identidad Visual">Visual Identity</span><span class="star">&#9733;</span>
+    <span data-en="Editorial Design" data-es="Diseño Editorial">Editorial Design</span><span class="star">&#9733;</span>
+  </div>
+</div>
+
+<section id="about">
+  <div class="about-left reveal">
+    <p class="about-section-label">§ 000 — <span data-en="About" data-es="Sobre mí">About</span></p>
+    <h2 class="about-hello" data-en="Hello!<br>I'm <em>Delfi</em>" data-es="¡Hola!<br>Soy <em>Delfi</em>">Hello!<br>I'm <em>Delfi</em></h2>
+    <p class="about-bio">
+      <span data-en="I'm a Major in <strong>Visual Design</strong> and <strong>Integrated Media Design</strong> @ Bunker Hill Community College." data-es="Estudio <strong>Diseño Visual</strong> y <strong>Diseño de Medios Integrados</strong> @ Bunker Hill Community College.">I'm a Major in <strong>Visual Design</strong> and <strong>Integrated Media Design</strong> @ Bunker Hill Community College.</span>
+      <br><br>
+      <span data-en="From <strong>Buenos Aires, Argentina</strong> — currently in <strong>Boston, Massachusetts.</strong>" data-es="De <strong>Buenos Aires, Argentina</strong> — actualmente en <strong>Boston, Massachusetts.</strong>">From <strong>Buenos Aires, Argentina</strong> — currently in <strong>Boston, Massachusetts.</strong></span>
+    </p>
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-num">2+</div>
+        <div class="stat-label" data-en="Years of Experience" data-es="Años de Experiencia">Years of Experience</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">15+</div>
+        <div class="stat-label" data-en="Projects" data-es="Proyectos">Projects</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">3</div>
+        <div class="stat-label" data-en="Disciplines" data-es="Disciplinas">Disciplines</div>
+      </div>
+    </div>
+  </div>
+  <div class="about-right reveal">
+    <div class="about-photo-frame">
+      <div class="photo-placeholder">
+       <div style="position:relative; width: 100%; height: 100vh;">
+  <img src="imgs/Portfolio 2026 about image -33.jpg" 
+       style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;" 
+       alt="about"/>
+
+  <div style="position: absolute; bottom: 24px; left: 24px; font-family:'Barlow Condensed',sans-serif; 
+              font-weight: 900; font-size: 0.85rem; color: rgba(245, 255, 0, 0.35); 
+              letter-spacing: 0.15em; text-transform: uppercase; z-index: 1;" 
+              data-en="Add your photo here" data-es="Agregá tu foto aquí"></div>
+  </div>
+</div>
+      <div class="photo-overlay-star"></div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="skills-header reveal">
+    <h2 class="skills-title">Hard<br><em>Skills</em></h2>
+  </div>
+  <div class="skills-grid reveal">
+    <div class="skill-col">
+      <p class="skill-col-title" data-en="_Disciplines" data-es="_Disciplinas">_Disciplines</p>
+      <ul class="skill-list">
+        <li data-en="Branding / Visual Identity" data-es="Branding / Identidad Visual">Branding / Visual Identity</li>
+        <li data-en="Logo Design & Mockups" data-es="Diseño de Logo & Mockups">Logo Design &amp; Mockups</li>
+        <li data-en="Social Media Materials" data-es="Materiales para Redes">Social Media Materials</li>
+        <li data-en="UI/UX Interfaces" data-es="Interfaces UI/UX">UI/UX Interfaces</li>
+        <li>Prototyping</li>
+        <li data-en="Merch Design" data-es="Diseño de Merch">Merch Design</li>
+        <li data-en="Vector & Raster Illustration" data-es="Ilustración Vectorial & Raster">Vector &amp; Raster Illustration</li>
+      </ul>
+    </div>
+    <div class="skill-col">
+      <p class="skill-col-title">_Software</p>
+      <ul class="skill-list">
+        <li>Adobe Illustrator</li><li>Adobe Photoshop</li><li>Adobe InDesign</li>
+        <li>Adobe DreamWeaver</li><li>Adobe Premiere Pro</li><li>Figma</li><li>Procreate</li>
+      </ul>
+    </div>
+    <div class="skill-col">
+      <p class="skill-col-title" data-en="_Interests" data-es="_Intereses">_Interests</p>
+      <ul class="skill-list">
+        <li data-en="Design" data-es="Diseño">Design</li>
+        <li data-en="Art & Crafts" data-es="Arte & Manualidades">Art &amp; Crafts</li>
+        <li data-en="Photography" data-es="Fotografía">Photography</li>
+        <li>Illustration</li><li>Editorial</li>
+        <li data-en="Typography" data-es="Tipografía">Typography</li>
+        <li data-en="Conceptual Art" data-es="Arte Conceptual">Conceptual Art</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="manifesto">
+  <div class="manifesto-star-bg"></div>
+  <p class="manifesto-label reveal">§ 001 — Manifesto</p>
+  <blockquote class="manifesto-text reveal" data-en="Design is not decoration.<br>It is the most <em>honest language</em> that exists.<br>Every visual decision is a stance, an idea,<br>a conversation that begins before a single word is read." data-es="El diseño no es decoración.<br>Es el <em>lenguaje más honesto</em> que existe.<br>Cada decisión visual es una postura, una idea,<br>una conversación que comienza antes de leer una sola palabra.">
+    Design is not decoration.<br>It is the most <em>honest language</em> that exists.<br>Every visual decision is a stance, an idea,<br>a conversation that begins before a single word is read.
+  </blockquote>
+  <div class="disciplines-row reveal">
+    <div class="discipline-tag">Branding</div>
+    <div class="discipline-tag" data-en="Visual Identity" data-es="Identidad Visual">Visual Identity</div>
+    <div class="discipline-tag" data-en="Editorial Design" data-es="Diseño Editorial">Editorial Design</div>
+    <div class="discipline-tag" data-en="Technical Exploration" data-es="Exploración Técnica">Technical Exploration</div>
+    <div class="discipline-tag">Illustration</div>
+    <div class="discipline-tag">UI/UX</div>
+  </div>
+</section>
+
+<div class="ticker-wrap dark">
+  <div class="ticker" style="animation-direction:reverse;animation-duration:18s;">
+    <span>Work Work Work</span><span class="star">&#9733;</span>
+    <span>Branding</span><span class="star">&#9733;</span>
+    <span data-en="Visual Identity" data-es="Identidad Visual">Visual Identity</span><span class="star">&#9733;</span>
+    <span data-en="Editorial Design" data-es="Diseño Editorial">Editorial Design</span><span class="star">&#9733;</span>
+    <span data-en="Technical Exploration" data-es="Exploración Técnica">Technical Exploration</span><span class="star">&#9733;</span>
+    <span>Work Work Work</span><span class="star">&#9733;</span>
+    <span>Branding</span><span class="star">&#9733;</span>
+    <span data-en="Visual Identity" data-es="Identidad Visual">Visual Identity</span><span class="star">&#9733;</span>
+    <span data-en="Editorial Design" data-es="Diseño Editorial">Editorial Design</span><span class="star">&#9733;</span>
+    <span data-en="Technical Exploration" data-es="Exploración Técnica">Technical Exploration</span><span class="star">&#9733;</span>
+  </div>
+</div>
+
+<section id="work">
+  <div class="work-header">
+    <h2 class="work-title reveal" data-en="Work" data-es="Trabajos">Work</h2>
+    <div class="work-categories reveal">
+      <span class="active" data-en="All" data-es="Todo">All</span>
+      <span>Branding</span>
+      <span>Editorial</span>
+      <span>Illustration</span>
+      <span data-en="Technical" data-es="Técnico">Technical</span>
+    </div>
+  </div>
+  <div class="projects-grid">
+
+    <a href="olfactory.html" class="project-card wide work-card">
+      <div class="project-bg project-bg-olfactory">
+        <div class="project-label-big">OLFACTORY</div>
+        <div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(245,255,0,0.03) 20px,rgba(245,255,0,0.03) 21px);"></div>
+        <div style="position:absolute;top:40px;left:40px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(32px,5vw,72px);color:rgba(245,255,0,0.6);text-transform:uppercase;line-height:1;">branding</div>
+      </div>
+      <div class="corner-tl"></div><div class="corner-br"></div>
+      <div class="project-info"> 
+        <p class="project-num">§ 002 — 01</p>
+        <h3 class="project-name">Olfactory.</h3>
+        <p class="project-type">_The Scent Archive</p>
+        <p class="project-detail" data-en="Brand identity for a mini museum dedicated to scent — where the real protagonist is not what you see, but what you feel." data-es="Identidad de marca para un mini museo dedicado al olfato — donde el protagonista no es lo que ves, sino lo que sentís.">Brand identity for a mini museum dedicated to scent — where the real protagonist is not what you see, but what you feel.</p>
+      </div>
+      <div class="project-year">2026.</div>
+    </a>
+
+    <div class="project-card">
+    <a href="ole.html" class="project-card wide work-card">
+		<div class="project-bg project-bg-ole">
+        <div class="project-label-big">OLE</div>
+        <div style="position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent,transparent 20px,rgba(255,255,255,0.02) 20px,rgba(255,255,255,0.02) 21px);"></div>
+        <div style="position:absolute;top:30px;left:30px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(24px,3vw,52px);color:rgba(255,255,255,0.5);text-transform:uppercase;line-height:1;">branding</div>
+      </div>
+      <div class="corner-tl"></div><div class="corner-br"></div>
+      <div class="project-info">
+        <p class="project-num">§ 002 — 02</p>
+        <h3 class="project-name">Ole.</h3>
+        <p class="project-type">_Spanish Beverage</p>
+        <p class="project-detail" data-en="Brand identity for a Spanish mocktail line — Valenciana, Rebujito, Sangria." data-es="Identidad de marca para una línea de mocktails españoles — Valenciana, Rebujito, Sangria.">Brand identity for a Spanish mocktail line — Valenciana, Rebujito, Sangria.</p>
+      </div>
+      <div class="project-year">2024.</div>
+		</a> </div>
+
+    <div class="project-card">
+          <a href="canion.html" class="project-card wide work-card">
+		<div class="project-bg project-bg-canion">
+        <div class="project-label-big">CANION</div>
+        <div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 15px,rgba(255,255,255,0.015) 15px,rgba(255,255,255,0.015) 16px);"></div>
+        <div style="position:absolute;top:30px;left:30px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(24px,3vw,52px);color:rgba(255,255,255,0.4);text-transform:uppercase;line-height:1;">branding</div>
+      </div>
+      <div class="corner-tl"></div><div class="corner-br"></div>
+      <div class="project-info">
+        <p class="project-num">§ 002 — 03</p>
+        <h3 class="project-name">Canion.</h3>
+        <p class="project-type">_Gourmet Resto</p>
+        <p class="project-detail" data-en="Immersive dining experience fusing marine life and Dadaism — inspired by Mar del Plata." data-es="Experiencia gastronómica que fusiona vida marina y Dadaísmo — inspirada en Mar del Plata.">Immersive dining experience fusing marine life and Dadaism — inspired by Mar del Plata.</p>
+      </div>
+      <div class="project-year">2025.</div>
+		</a> </div>
+
+    <div class="project-card">
+          <a href="personal-id.html" class="project-card wide work-card">
+			  <div class="project-bg project-bg-personal">
+        <div class="project-label-big">PERSONAL</div>
+        <div style="position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent,transparent 20px,rgba(255,100,150,0.04) 20px,rgba(255,100,150,0.04) 21px);"></div>
+        <div style="position:absolute;top:30px;left:30px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(24px,3vw,52px);color:rgba(255,100,150,0.5);text-transform:uppercase;line-height:1;">visual identity</div>
+      </div>
+      <div class="corner-tl"></div><div class="corner-br"></div>
+      <div class="project-info">
+        <p class="project-num">§ 002 — 04</p>
+        <h3 class="project-name" data-en="Personal ID" data-es="ID Personal">Personal ID</h3>
+        <p class="project-type">_Visual Identity System</p>
+        <p class="project-detail" data-en="Dynamic and expressive graphic system rooted in Buenos Aires — display typography, organic forms, vibrant palette." data-es="Sistema gráfico dinámico con raíces en Buenos Aires — tipografía display, formas orgánicas, paleta vibrante.">Dynamic and expressive graphic system rooted in Buenos Aires — display typography, organic forms, vibrant palette.</p>
+      </div>
+      <div class="project-year">2025.</div>
+		</a> </div>
+
+    <div class="project-card">
+          <a href="canvas.html" class="project-card wide work-card">
+	<div class="project-bg project-bg-canvas">
+        <div class="project-label-big">CANVAS</div>
+        <div style="position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent,transparent 20px,rgba(0,255,0,0.02) 20px,rgba(0,255,0,0.02) 21px);"></div>
+        <div style="position:absolute;top:30px;left:30px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(24px,3vw,52px);color:rgba(100,255,100,0.4);text-transform:uppercase;line-height:1;">editorial design</div>
+      </div>
+      <div class="corner-tl"></div><div class="corner-br"></div>
+      <div class="project-info">
+        <p class="project-num">§ 002 — 05</p>
+        <h3 class="project-name">Canvas.</h3>
+        <p class="project-type">_Makeup Magazine</p>
+        <p class="project-detail" data-en="Monthly magazine for makeup artists — features, typography, digital adaptation. Bold, fearless, out of bounds." data-es="Revista mensual para maquilladores — editorial, tipografía, adaptación digital. Bold, sin límites.">Monthly magazine for makeup artists — features, typography, digital adaptation. Bold, fearless, out of bounds.</p>
+      </div>
+      <div class="project-year">2025.</div>
+		</a> </div>
+
+    <div class="project-card wide">
+          <a href="technical-exploration.html" class="project-card wide work-card">
+		<div class="project-bg project-bg-tech">
+        <div class="project-label-big">TECHNICAL</div>
+        <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(0,200,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,200,255,0.04) 1px,transparent 1px);background-size:40px 40px;"></div>
+        <div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(0,200,255,0.015) 20px,rgba(0,200,255,0.015) 21px);"></div>
+        <div style="position:absolute;top:40px;left:40px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:clamp(32px,5vw,72px);color:rgba(0,200,255,0.3);text-transform:uppercase;line-height:1;">technical exploration</div>
+      </div>
+      <div class="corner-tl"></div><div class="corner-br"></div>
+      <div class="project-info">
+        <p class="project-num">§ 002 — 06</p>
+        <h3 class="project-name" data-en="Technical Exploration" data-es="Exploración Técnica">Technical Exploration</h3>
+        <p class="project-type" data-en="_Illustrations & Experiments" data-es="_Ilustraciones & Experimentos">_Illustrations &amp; Experiments</p>
+        <p class="project-detail" data-en="Vector hyperrealism, digital illustration and technical experiments — tea cups, tomatoes, peppers, citrus, transit posters, and beyond." data-es="Hiperrealismo vectorial, ilustración digital y experimentos — tazas de té, tomates, pimientos, cítricos, carteles de tránsito y más.">Vector hyperrealism, digital illustration and technical experiments — tea cups, tomatoes, peppers, citrus, transit posters, and beyond.</p>
+      </div>
+      <div class="project-year">2024–2026.</div>
+		</a> </div>
+
+  </div>
+</section>
+
+<section id="process">
+  <div class="process-top">
+    <div class="process-left reveal">
+      <p class="process-label">§ 003 — <span data-en="How I Work" data-es="Cómo Trabajo">How I Work</span></p>
+      <h2 class="process-title">
+        <span data-en="Chaos has" data-es="El caos">Chaos has</span><br>
+        <span class="italic" data-en="a method." data-es="tiene un método.">a method.</span>
+      </h2>
+    </div>
+    <div class="process-right reveal">
+      <div class="process-description">
+        <p data-en="I start from the question, not the form. Every project is an investigation:" data-es="Comienzo desde la pregunta, no desde la forma. Cada proyecto es una investigación:">I start from the question, not the form. Every project is an investigation:</p>
+        <p data-en="What does this brand want to say? Who is it speaking to? How does an idea feel when you see it?" data-es="¿Qué quiere decir esta marca? ¿A quién le habla? ¿Cómo se siente una idea cuando la ves?">What does this brand want to say? Who is it speaking to? How does an idea feel when you see it?</p>
+      </div>
+    </div>
+  </div>
+  <div class="process-steps-row reveal">
+    <div class="process-step">
+      <div class="process-step-num">01</div>
+      <h3 class="process-step-title" data-en="Active Listening" data-es="Escucha Activa">Active Listening</h3>
+      <p class="process-step-desc" data-en="Before the pencil, the ear. Understanding the real problem behind the brief." data-es="Antes que el lápiz, el oído. Entender el problema real detrás del brief.">Before the pencil, the ear. Understanding the real problem behind the brief.</p>
+      <div class="process-step-bg">01</div>
+    </div>
+    <div class="process-step">
+      <div class="process-step-num">02</div>
+      <h3 class="process-step-title" data-en="Research + References" data-es="Investigación + Referencias">Research + References</h3>
+      <p class="process-step-desc" data-en="Building the conceptual universe around the project before designing anything." data-es="Construir el universo conceptual del proyecto antes de diseñar cualquier cosa.">Building the conceptual universe around the project before designing anything.</p>
+      <div class="process-step-bg">02</div>
+    </div>
+    <div class="process-step">
+      <div class="process-step-num">03</div>
+      <h3 class="process-step-title" data-en="Visual Exploration" data-es="Exploración Visual">Visual Exploration</h3>
+      <p class="process-step-desc" data-en="Many possible paths. Sketches, typography, color, tension. Seeing what speaks." data-es="Muchos caminos posibles. Bocetos, tipografía, color, tensión. Ver qué habla.">Many possible paths. Sketches, typography, color, tension. Seeing what speaks.</p>
+      <div class="process-step-bg">03</div>
+    </div>
+    <div class="process-step">
+      <div class="process-step-num">04</div>
+      <h3 class="process-step-title" data-en="Refinement & Delivery" data-es="Refinamiento & Entrega">Refinement &amp; Delivery</h3>
+      <p class="process-step-desc" data-en="The most honest solution, executed with precision. No excess, no shortage." data-es="La solución más honesta, ejecutada con precisión. Sin excesos, sin carencias.">The most honest solution, executed with precision. No excess, no shortage.</p>
+      <div class="process-step-bg">04</div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="contact-bg-text">LETS WORK</div>
+  <p class="contact-label reveal">§ 004 — <span data-en="Contact" data-es="Contacto">Contact</span></p>
+  <h2 class="contact-cta reveal" data-en="Let's make<br><em>something</em><br>great." data-es="Hagamos<br><em>algo</em><br>increíble.">Let's make<br><em>something</em><br>great.</h2>
+  <div class="contact-links reveal">
+    <div class="contact-link">
+      <span class="contact-link-label" data-en="Email" data-es="Correo">Email</span>
+      <a href="/cdn-cgi/l/email-protection#e286878e848b8c839287908798818d8c968ba2858f838b8ecc818d8f" class="contact-link-value"><span class="__cf_email__" data-cfemail="8befeee7ede2e5eafbeef9eef1e8e4e5ffe2cbece6eae2e7a5e8e4e6">[email&#160;protected]</span></a>
+    </div>
+    <div class="contact-link">
+      <span class="contact-link-label" data-en="Phone" data-es="Teléfono">Phone</span>
+      <a href="tel:6172016196" class="contact-link-value">(617) 201-6196</a>
+    </div>
+    <div class="contact-link">
+      <span class="contact-link-label">LinkedIn</span>
+      <a href="#" class="contact-link-value">linkedin.com/in/delfina-perez-conti</a>
+    </div>
+  </div>
+  <div class="contact-bottom">
+    <span class="contact-bottom-name">Delfina Perez Conti — <span data-en="Visual Designer" data-es="Diseñadora Visual">Visual Designer</span></span>
+    <span class="contact-bottom-copy">Portfolio 2026 — Boston, MA</span>
+  </div>
+</section>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const cursor=document.getElementById('cursor');
+const follower=document.getElementById('cursorFollower');
+let mx=0,my=0,fx=0,fy=0;
+document.addEventListener('mousemove',function(e){
+  mx=e.clientX; my=e.clientY;
+  cursor.style.transform='translate('+(mx-6)+'px,'+(my-6)+'px)';
+});
+(function af(){
+  fx+=(mx-fx-18)*0.12; fy+=(my-fy-18)*0.12;
+  follower.style.transform='translate('+fx+'px,'+fy+'px)';
+  requestAnimationFrame(af);
+})();
+
+var rvObs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:0.08});
+document.querySelectorAll('.reveal').forEach(function(el){rvObs.observe(el);});
+
+function fitProcessText(){
+  var el=document.getElementById('processBgWord');
+  if(!el)return;
+  el.style.fontSize='100px';
+  var ratio=window.innerWidth/el.scrollWidth;
+  el.style.fontSize=(100*ratio*0.998)+'px';
+}
+fitProcessText();
+window.addEventListener('resize',fitProcessText);
+
+var sections=document.querySelectorAll('section[id]');
+var navLinks=document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',function(){
+  var cur='';
+  sections.forEach(function(s){if(window.scrollY>=s.offsetTop-120)cur=s.id;});
+  navLinks.forEach(function(a){a.style.color=a.getAttribute('href')==='#'+cur?'var(--y)':'';});
+});
+
+function setLang(lang){
+  document.getElementById('btn-en').classList.toggle('active',lang==='en');
+  document.getElementById('btn-es').classList.toggle('active',lang==='es');
+  document.getElementById('html-root').lang=lang==='es'?'es':'en';
+  document.title=lang==='es'?'Delfina Perez Conti — Diseñadora Visual':'Delfina Perez Conti — Visual Designer';
+  document.querySelectorAll('[data-'+lang+']').forEach(function(el){
+    if(el.tagName==='INPUT'||el.tagName==='TEXTAREA'){
+      el.placeholder=el.getAttribute('data-'+lang);
+    } else {
+      el.innerHTML=el.getAttribute('data-'+lang);
+    }
+  });
+}
+
+// Page transition for work-card links
+const workLinks = document.querySelectorAll(".work-card");
+const transition = document.getElementById("transition");
+workLinks.forEach(function(link){
+  link.addEventListener("click", function(e){
+    e.preventDefault();
+    var target = this.href;
+    transition.classList.add("active");
+    setTimeout(function(){
+      window.location.href = target;
+    },600);
+  });
+});
+</script>
+</body>
+</html>
